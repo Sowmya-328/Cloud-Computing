@@ -1,4 +1,4 @@
-/*const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const dbPath = path.resolve(__dirname, '../database.sqlite');
 
@@ -17,9 +17,9 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-module.exports = db;*/
+module.exports = db;
 
-const sqlite3 = require('sqlite3').verbose();
+/*const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 // Azure-safe writable path
@@ -33,5 +33,5 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-module.exports = db;
+module.exports = db;*/
 
