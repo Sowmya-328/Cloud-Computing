@@ -4,14 +4,11 @@
   "description": "Attendance System Backend",
   "main": "index.js",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "start": "node index.js",
-    "postinstall": "npm rebuild"
-  },
-  "engines": {
-    "node": ">=22.0.0"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
