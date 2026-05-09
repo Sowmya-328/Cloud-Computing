@@ -1,37 +1,29 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const dbPath = path.resolve(__dirname, '../database.sqlite');
+const fs = require('fs');
 
-// [AZURE DEPLOYMENT NOTE]:
-// For Microsoft Azure SQL Database deployment via Azure App Service, install the 'mssql' package.
-// Read connection properties from process.env.DB_SERVER, process.env.DB_USER, etc.
-// Create an implicit wrapper around db.all, db.get, and db.run to proxy the SQL strings over to
-// the 'mssql' connection pool so that the application controllers can run seamlessly in Azure.
-// The local database below correctly structures all outputs for seamless environment transition.
+let dbPath;
 
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('Error connecting to database:', err.message);
-    } else {
-        console.log('Connected to the SQLite database (Ready for Azure SQL Migration).');
+// Check if running in Azure App Service environment
+if (process.env.WEBSITE_SITE_NAME) {
+    // In Azure, /home/site/wwwroot can be read-only (Run From Package)
+    // We use /home/data which is persistent and writable across deployments
+    const dataDir = '/home/data';
+    if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
     }
-});
-
-module.exports = db;
-
-/*const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-
-// Azure-safe writable path
-const dbPath = path.join('/home', 'site', 'wwwroot', 'database.sqlite');
+    dbPath = path.join(dataDir, 'database.sqlite');
+} else {
+    // Localhost environment
+    dbPath = path.resolve(__dirname, '../database.sqlite');
+}
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Database opening error:', err);
     } else {
-        console.log('Connected to SQLite database.');
+        console.log(`Connected to SQLite database at ${dbPath}`);
     }
 });
 
-module.exports = db;*/
-
+module.exports = db;
